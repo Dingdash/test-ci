@@ -1,0 +1,57 @@
+name: Generate Changelog
+
+on:
+    pull_request:
+        branches:
+            - master
+        types: [opened, synchronize] # trigger on opened and sync
+    workflow_dispatch:
+        inputs:
+            dry_run:
+                description: 'Dry run (true/false)'
+                required: false
+                default: 'true'
+
+permissions:
+    contents: write
+
+jobs: 
+    generate-changelogs:
+        if: github.event.pull_request.head.ref == 'develop'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  
+            - name: 🚀 Run release script
+              run: |
+                  if [ "${{ inputs.dry_run }}" = "true" ]; then
+                    node cicd/release.js --dry-run
+                  else
+                    node cicd/release.js
+                  fi
+              env:
+                  GITHUB_REPOSITORY: ${{ github.repository }}
+                  GITHUB_TOKEN: ${{ secrets.CUSTOM_PAT }}
+
+            - name: 📝 Commit & push changes
+              if: ${{ inputs.dry_run != 'true' }}
+              env:
+                  GITHUB_REPOSITORY: ${{ github.repository }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  # Make sure we're on the latest develop branch
+                  git fetch origin
+                  git checkout ${{ github.event.pull_request.head.ref }}
+                  git pull origin ${{ github.event.pull_request.head.ref }}
+                  # Commit only if there are changes
+                  git add . || echo "Nothing to add"
+                  git diff --cached --quiet || (
+                    git commit -m "chore: release version bump"
+                    git push origin ${{ github.event.pull_request.head.ref }}
+                  )

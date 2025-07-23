@@ -1,0 +1,49 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'  # Matches tags like 1.2.3
+run-name: ${{ github.ref_name }}
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+env:
+  GITHUB_TOKEN: ${{ secrets.CUSTOM_PAT }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CUSTOM_PAT }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📥 Install GitHub CLI
+        run: sudo apt-get install -y gh
+
+      - name: 📌 Create GitHub Release
+        run: |
+          VERSION="${GITHUB_REF##*/}"  # Extracts '1.2.3'
+          echo "📦 Releasing tag: $VERSION"
+
+          if [ -f CHANGELOG.md ]; then
+            gh release create "$VERSION" \
+              --repo "${{ github.repository }}" \
+              --title "$VERSION" \
+              --notes-file CHANGELOG.md \
+              --latest
+          else
+            echo "⚠️ CHANGELOG.md not found. Creating release without notes."
+            gh release create "$VERSION" \
+              --repo "${{ github.repository }}" \
+              --title "$VERSION" \
+              --notes "Release $VERSION"
+          fi
