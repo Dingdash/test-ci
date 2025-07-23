@@ -1,0 +1,60 @@
+name: Push tag
+
+
+on: 
+  pull_request:
+      types: [closed]
+      branches: ["master"]
+
+# on:
+#   workflow_run:
+#     workflows: ["Generate Changelog"]
+#     types:
+#       - completed 
+
+run-name: Push Tag
+permissions:
+  contents: write
+
+jobs:
+  push-tag:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CUSTOM_PAT  }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Pushing Tags
+        env:
+          GH_PAT: ${{ secrets.CUSTOM_PAT }}
+        run: |
+          # Determine version
+          if [ -f package.json ]; then
+            VERSION=$(node -p "require('./package.json').version")
+          elif [ -f version.txt ]; then
+            VERSION=$(cat version.txt)
+          else
+            echo "❌ No version source found!"
+            exit 1
+          fi
+
+          echo "📦 Using version: $VERSION"
+
+          # Fetch latest remote tags
+          git fetch --tags
+
+          # Check if tag exists on remote
+          if git ls-remote --tags origin | grep -q "refs/tags/$VERSION"; then
+            echo "🔁 Tag $VERSION already exists on remote, skipping tag and release."
+            exit 0
+          fi
+
+          # Create tag and push
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push https://x-access-token:${GH_PAT}@github.com/${GITHUB_REPOSITORY} $VERSION
