@@ -76,24 +76,24 @@ runs:
         commit-message: "chore: update changelog"
         delete-branch: false
         
-    - name: Enable auto-merge
-      if: steps.cpr.outputs.pull-request-number != ''
-      uses: peter-evans/enable-pull-request-automerge@v3
-      with:
-        token: ${{ inputs.github-token }}
-        pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-        merge-method: squash
+    # - name: Enable auto-merge
+    #   if: steps.cpr.outputs.pull-request-number != ''
+    #   uses: peter-evans/enable-pull-request-automerge@v3
+    #   with:
+    #     token: ${{ inputs.github-token }}
+    #     pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+    #     merge-method: squash
 
-    - name: 📥 Install GitHub CLI
-      shell: bash
-      run: sudo apt-get install -y gh
+    # - name: 📥 Install GitHub CLI
+    #   shell: bash
+    #   run: sudo apt-get install -y gh
 
-    - name: Delete source branch
-      shell: bash
-      if: steps.cpr.outputs.pull-request-operation == 'created'
-      env:
-        GH_TOKEN: ${{ inputs.github-token }}
-      run: |
-        gh api \
-          -X DELETE \
-          "repos/${{ github.repository }}/git/refs/heads/${{ inputs.pr-branch }}"
+    # - name: Delete source branch
+    #   shell: bash
+    #   if: steps.cpr.outputs.pull-request-operation == 'created'
+    #   env:
+    #     GH_TOKEN: ${{ inputs.github-token }}
+    #   run: |
+    #     gh api \
+    #       -X DELETE \
+    #       "repos/${{ github.repository }}/git/refs/heads/${{ inputs.pr-branch }}"
