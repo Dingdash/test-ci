@@ -13,6 +13,8 @@ on:
                 default: 'true'
 
 permissions:
+    pull-requests: read
+    actions: write
     contents: write
 
 jobs: 
