@@ -52,10 +52,11 @@ runs:
     - name: 📝 Commit & push changes
       env:
           GITHUB_REPOSITORY: ${{ inputs.github-repository }}
-
-          GITHUB_TOKEN: ${{ inputs.github-token }
+          GITHUB_TOKEN: ${{ inputs.github-token }}
+          PR_BRANCH: ${{ inputs.pr-branch }}
       run: |
-          BRANCH_NAME="${{ inputs.pr-branch }}"
+          BRANCH_NAME="$PR_BRANCH"
+          GITHUB_TOKEN: ${{ inputs.github-token }
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Make sure we're on the latest develop branch
