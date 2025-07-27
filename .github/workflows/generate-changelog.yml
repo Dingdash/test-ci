@@ -59,7 +59,7 @@ jobs:
             #         git push origin ${{ github.event.pull_request.head.ref }}
             #       )
     changelog:
-        if: github.event.pull_request.user.login != 'github-actions' && github.event.pull_request.head.ref == 'develop'
+        if: github.event.pull_request.user.login != 'github-actions[bot]' && github.event.pull_request.head.ref == 'develop'
         runs-on: ubuntu-latest
         steps:
 
