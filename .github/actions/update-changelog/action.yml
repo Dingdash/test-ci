@@ -13,6 +13,9 @@ inputs:
   github-token:
     description: GitHub token
     required: true
+  github-repository:
+    description: GitHub repository
+    required: true
   custom-pat:
     description: Custom Personal Access Token 
     required: true 
@@ -37,7 +40,7 @@ runs:
     - name: Generate changelog
       run: node cicd/release.js
       env:
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REPOSITORY: ${{ inputs.github-repository }}
           GITHUB_TOKEN: ${{ inputs.custom-pat }}
       shell: bash
 
