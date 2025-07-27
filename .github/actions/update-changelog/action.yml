@@ -52,7 +52,8 @@ runs:
     - name: 📝 Commit & push changes
       env:
           GITHUB_REPOSITORY: ${{ inputs.github-repository }}
-          GITHUB_TOKEN: ${{ inputs.github-token }}
+
+          GITHUB_TOKEN: ${{ inputs.github-token }
       run: |
           BRANCH_NAME="${{ inputs.pr-branch }}"
           git config user.name "github-actions[bot]"
