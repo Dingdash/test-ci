@@ -18,6 +18,8 @@
 - fix cleanup ([#46](https://github.com/Dingdash/test-ci/pull/46))
 - chore: update changelog ([#45](https://github.com/Dingdash/test-ci/pull/45))
     - Automated changelog update after merge to develop- fix ([#48](https://github.com/Dingdash/test-ci/pull/48))
+- chore: update changelog ([#47](https://github.com/Dingdash/test-ci/pull/47))
+    - Automated changelog update after merge to develop- new workflow ([#50](https://github.com/Dingdash/test-ci/pull/50))
 
 ## 0.0.2
 
