@@ -1,0 +1,73 @@
+name: Update Changelog and Create PR
+description: Generates changelog, pushes to a fixed branch, and creates a PR
+
+inputs:
+  base-branch:
+    description: The base branch to target the PR against
+    default: develop
+    required: false
+  pr-branch:
+    description: The branch to push the changelog update to
+    default: chore/update-changelog
+    required: false
+  github-token:
+    description: GitHub token
+    required: true
+  custom-pat:
+    description: Custom Personal Access Token 
+    required: true 
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20 
+
+    - name: Set up Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+      shell: bash
+
+    - name: Generate changelog
+      run: node cicd/release.js
+      env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ inputs.custom-pat }}
+      shell: bash
+
+    - name: Create/update branch and push
+      run: |
+        BRANCH_NAME="${{ inputs.pr-branch }}"
+        git branch -D "$BRANCH_NAME" || true
+        git checkout -b "$BRANCH_NAME"
+        git add CHANGELOG.md
+        git commit -m "chore: update changelog" || echo "No changes to commit"
+        git push -f origin "$BRANCH_NAME"
+        echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Create or update PR
+      id: cpr
+      uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ inputs.github-token }}
+        branch: ${{ env.branch_name }}
+        base: ${{ inputs.base-branch }}
+        title: "chore: update changelog"
+        body: "Automated changelog update after merge to ${{ inputs.base-branch }}"
+        commit-message: "chore: update changelog"
+        delete-branch: false
+        
+    - name: Enable auto-merge
+      if: steps.cpr.outputs.pull-request-number != ''
+      uses: peter-evans/enable-pull-request-automerge@v3
+      with:
+        token: ${{ inputs.github-token }}
+        pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+        merge-method: squash
