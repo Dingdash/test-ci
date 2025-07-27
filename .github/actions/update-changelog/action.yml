@@ -31,7 +31,9 @@ runs:
 
     - name: 🚀 Run release script
       shell: bash
-      run: node cicd/release.js
+      run: |
+          node cicd/release.js
+          cat CHANGELOG.md
       env:
           GITHUB_REPOSITORY: ${{ inputs.github-repository }}
           GITHUB_TOKEN: ${{ inputs.custom-pat }}
