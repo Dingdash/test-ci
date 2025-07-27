@@ -33,6 +33,13 @@ jobs:
               with:
                 token: ${{ secrets.CUSTOM_PAT }}
 
+            - name: Get last commit message
+              id: get_commit_message
+              run: |
+               COMMIT_MESSAGE=$(git log -1 --pretty=%B ${{ github.event.pull_request.head.sha }})
+               echo "Last PR commit message: $COMMIT_MESSAGE"
+               if echo "$COMMIT_MESSAGE" | grep -iq "bump"; then 
+               exit 0
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
