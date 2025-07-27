@@ -66,5 +66,5 @@ jobs:
             - name: Run Changelog Action
               uses: ./.github/actions/update-changelog
               with:
-                github-token: ${{ secrets.GITHUB_TOKEN }}
+                custom-pat: ${{ secrets.CUSTOM_PAT }}
                 github-repository: ${{ github.repository  }}
