@@ -30,7 +30,20 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: 20 
-
+    - name: Debug env vars
+      run: |
+        echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
+        echo "GITHUB_TOKEN is ${#GITHUB_TOKEN} characters long"
+      env:
+        GITHUB_REPOSITORY: ${{ inputs.github-repository }}
+        GITHUB_TOKEN: ${{ inputs.custom-pat }}
+      shell: bash
+      
+    - name: Export env vars for changelog script
+      run: |
+        echo "GITHUB_REPOSITORY=${{ inputs.github-repository }}" >> $GITHUB_ENV
+        echo "GITHUB_TOKEN=${{ inputs.custom-pat }}" >> $GITHUB_ENV
+      shell: bash
     - name: Generate changelog
       run: node cicd/release.js
       env:
