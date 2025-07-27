@@ -42,12 +42,6 @@ runs:
         echo "GITHUB_REPOSITORY=${{ inputs.github-repository }}" >> $GITHUB_ENV
         echo "GITHUB_TOKEN=${{ inputs.custom-pat }}" >> $GITHUB_ENV
       shell: bash
-    - name: Generate changelog
-      run: node cicd/release.js
-      env:
-          GITHUB_REPOSITORY: ${{ inputs.github-repository }}
-          GITHUB_TOKEN: ${{ inputs.custom-pat }}
-      shell: bash
 
     - name: 📝 Commit & push changes
       env:
