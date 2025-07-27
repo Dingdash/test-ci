@@ -75,7 +75,7 @@ runs:
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ inputs.github-token }}
-        branch: ${{ env.branch_name }}
+        branch: ${{ inputs.pr-branch }}
         base: ${{ inputs.base-branch }}
         title: "chore: update changelog"
         body: "Automated changelog update after merge to ${{ inputs.base-branch }}"
