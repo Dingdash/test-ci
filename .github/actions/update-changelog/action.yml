@@ -83,3 +83,18 @@ runs:
         token: ${{ inputs.github-token }}
         pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
         merge-method: squash
+
+    - name: Set up GitHub CLI
+      uses: cli/cli-action@v1
+      with:
+        version: latest
+
+    - name: Delete source branch
+      shell: bash
+      if: steps.cpr.outputs.pull-request-operation == 'created'
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+      run: |
+        gh api \
+          -X DELETE \
+          "repos/${{ github.repository }}/git/refs/heads/${{ inputs.pr-branch }}"
