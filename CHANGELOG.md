@@ -1,3 +1,26 @@
+## 1.1.0
+
+`2025-07-27`
+
+- readme ([#27](https://github.com/Dingdash/test-ci/pull/27))
+- upup ([#30](https://github.com/Dingdash/test-ci/pull/30))
+- Upup ([#31](https://github.com/Dingdash/test-ci/pull/31))
+- Upup ([#32](https://github.com/Dingdash/test-ci/pull/32))
+- fix ([#33](https://github.com/Dingdash/test-ci/pull/33))
+- Fix ([#34](https://github.com/Dingdash/test-ci/pull/34))
+- fix pr ([#35](https://github.com/Dingdash/test-ci/pull/35))
+- release ([#36](https://github.com/Dingdash/test-ci/pull/36))
+- fix ([#37](https://github.com/Dingdash/test-ci/pull/37))
+- fix ([#38](https://github.com/Dingdash/test-ci/pull/38))
+- fix flow ([#39](https://github.com/Dingdash/test-ci/pull/39))
+- open pr ([#41](https://github.com/Dingdash/test-ci/pull/41))
+- Fix 2 ([#44](https://github.com/Dingdash/test-ci/pull/44))
+- fix cleanup ([#46](https://github.com/Dingdash/test-ci/pull/46))
+- chore: update changelog ([#45](https://github.com/Dingdash/test-ci/pull/45))
+    - Automated changelog update after merge to develop- fix ([#48](https://github.com/Dingdash/test-ci/pull/48))
+- chore: update changelog ([#47](https://github.com/Dingdash/test-ci/pull/47))
+    - Automated changelog update after merge to develop- new workflow ([#50](https://github.com/Dingdash/test-ci/pull/50))
+
 ## 0.0.2
 
 `2025-07-27`

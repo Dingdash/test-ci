@@ -5,67 +5,66 @@ on:
         branches:
             - master
         types: [opened, synchronize] # trigger on opened and sync
+        paths-ignore:
+            - 'CHANGELOG.md'
+            - 'version.txt'  # or whatever file your release script updates
+            - 'VERSION'
     workflow_dispatch:
         inputs:
             dry_run:
                 description: 'Dry run (true/false)'
                 required: false
                 default: 'true'
+concurrency:
+    group: changelog-${{ github.workflow }}
+    cancel-in-progress: true
 
 permissions:
-    pull-requests: write
-    actions: write
+    pull-requests: read
     contents: write
 
-jobs: 
+jobs:
     generate-changelogs:
         if: github.event.pull_request.head.ref == 'develop'
         runs-on: ubuntu-latest
+
         steps:
             - uses: actions/checkout@v4
+              with:
+                token: ${{ secrets.CUSTOM_PAT }}
 
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
-                  
-                  
-            # - name: 🚀 Run release script
-            #   run: |
-            #       if [ "${{ inputs.dry_run }}" = "true" ]; then
-            #         node cicd/release.js --dry-run
-            #       else
-            #         node cicd/release.js
-            #       fi
-            #   env:
-            #       GITHUB_REPOSITORY: ${{ github.repository }}
-            #       GITHUB_TOKEN: ${{ secrets.CUSTOM_PAT }}
 
-            # - name: 📝 Commit & push changes
-            #   if: ${{ inputs.dry_run != 'true' }}
-            #   env:
-            #       GITHUB_REPOSITORY: ${{ github.repository }}
-            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            #   run: |
-            #       git config user.name "github-actions[bot]"
-            #       git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            #       # Make sure we're on the latest develop branch
-            #       git fetch origin
-            #       git checkout ${{ github.event.pull_request.head.ref }}
-            #       git pull origin ${{ github.event.pull_request.head.ref }}
-            #       # Commit only if there are changes
-            #       git add . || echo "Nothing to add"
-            #       git diff --cached --quiet || (
-            #         git commit -m "chore: release version bump"
-            #         git push origin ${{ github.event.pull_request.head.ref }}
-            #       )
-    changelog:
-        runs-on: ubuntu-latest
-        steps:
+            - name: 🚀 Run release script
+              run: |
+                  if [ "${{ inputs.dry_run }}" = "true" ]; then
+                    node cicd/release.js --dry-run
+                  else
+                    node cicd/release.js
+                  fi
+              env:
+                  GITHUB_REPOSITORY: ${{ github.repository }}
+                  GITHUB_TOKEN: ${{ secrets.CUSTOM_PAT }}
 
-            - uses: actions/checkout@v4
-            - name: Run Changelog Action
-              uses: ./.github/actions/update-changelog
-              with:
-                custom-pat: ${{ secrets.CUSTOM_PAT }}
-                github-repository: ${{ github.repository  }}
-                github-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: 📝 Commit & push changes
+              if: ${{ inputs.dry_run != 'true' }}
+              env:
+                  GITHUB_REPOSITORY: ${{ github.repository }}
+                  GITHUB_TOKEN: ${{ secrets.CUSTOM_PAT }}
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  # Make sure we're on the latest develop branch
+                  git fetch origin
+                  git checkout ${{ github.event.pull_request.head.ref }}
+                  git pull origin ${{ github.event.pull_request.head.ref }}
+                  # Run changelog script again just in case base changed
+                  node cicd/release.js
+                  # Commit only if there are changes
+                  git add . || echo "Nothing to add"
+                  git diff --cached --quiet || (
+                    git commit -m "chore: release version bump"
+                    git push origin ${{ github.event.pull_request.head.ref }}
+                  )

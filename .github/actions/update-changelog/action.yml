@@ -37,25 +37,25 @@ runs:
       env:
           GITHUB_REPOSITORY: ${{ inputs.github-repository }}
           GITHUB_TOKEN: ${{ inputs.custom-pat }}
-    - name: 📝 Commit & push changes
-      env:
-          GITHUB_REPOSITORY: ${{ inputs.github-repository }}
-          GITHUB_TOKEN: ${{ inputs.github-token }}
-          PR_BRANCH: ${{ inputs.pr-branch }}
-      run: |
-          BRANCH_NAME="$PR_BRANCH"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git branch -D "$BRANCH_NAME" || true
-          git checkout -b "$BRANCH_NAME"
-          # Commit only if there are changes
-          git add . || echo "Nothing to add"
-          git diff --cached --quiet || (
-            git commit -m "chore: release version bump"
-            git push -f origin "$BRANCH_NAME"
-            echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
-          )
-      shell: bash
+    # - name: 📝 Commit & push changes
+    #   env:
+    #       GITHUB_REPOSITORY: ${{ inputs.github-repository }}
+    #       GITHUB_TOKEN: ${{ inputs.github-token }}
+    #       PR_BRANCH: ${{ inputs.pr-branch }}
+    #   run: |
+    #       BRANCH_NAME="$PR_BRANCH"
+    #       git config user.name "github-actions[bot]"
+    #       git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    #       git branch -D "$BRANCH_NAME" || true
+    #       git checkout -b "$BRANCH_NAME"
+    #       # Commit only if there are changes
+    #       git add . || echo "Nothing to add"
+    #       git diff --cached --quiet || (
+    #         git commit -m "chore: release version bump"
+    #         git push -f origin "$BRANCH_NAME"
+    #         echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+    #       )
+    #   shell: bash
 
     # - name: Create/update branch and push
     #   run: |
@@ -75,7 +75,7 @@ runs:
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ inputs.github-token }}
-        branch: ${{ env.branch_name }}
+        branch: ${{ inputs.pr-branch }}
         base: ${{ inputs.base-branch }}
         title: "chore: update changelog"
         body: "Automated changelog update after merge to ${{ inputs.base-branch }}"
