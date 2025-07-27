@@ -68,3 +68,4 @@ jobs:
               with:
                 custom-pat: ${{ secrets.CUSTOM_PAT }}
                 github-repository: ${{ github.repository  }}
+                github-token: ${{ secrets.GITHUB_TOKEN }}

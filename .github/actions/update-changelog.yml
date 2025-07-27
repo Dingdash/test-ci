@@ -56,7 +56,7 @@ runs:
       id: cpr
       uses: peter-evans/create-pull-request@v6
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ inputs.github-token }}
         branch: ${{ env.branch_name }}
         base: ${{ inputs.base-branch }}
         title: "chore: update changelog"
