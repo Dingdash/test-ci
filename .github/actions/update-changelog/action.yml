@@ -59,11 +59,9 @@ runs:
           GITHUB_TOKEN: ${{ inputs.github-token }
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Make sure we're on the latest develop branch
           git fetch origin
           git checkout develop
           git pull origin develop
-          # Run changelog script again just in case base changed
           node cicd/release.js
           # Commit only if there are changes
           git add . || echo "Nothing to add"
