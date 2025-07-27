@@ -52,20 +52,23 @@ runs:
     - name: 📝 Commit & push changes
       env:
           GITHUB_REPOSITORY: ${{ inputs.github-repository }}
-          GITHUB_TOKEN: ${{ inpus.github-token }}
+
+          GITHUB_TOKEN: ${{ inputs.github-token }
       run: |
           BRANCH_NAME="${{ inputs.pr-branch }}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Make sure we're on the latest develop branch
           git fetch origin
-          git checkout ${{ github.event.pull_request.head.ref }}
-          git pull origin ${{ github.event.pull_request.head.ref }}
+          git checkout develop
+          git pull origin develop
           # Run changelog script again just in case base changed
           node cicd/release.js
           # Commit only if there are changes
           git add . || echo "Nothing to add"
           git diff --cached --quiet || (
+            git branch -D "$BRANCH_NAME" || true
+            git checkout -b "$BRANCH_NAME"
             git commit -m "chore: release version bump"
             git push -f origin "$BRANCH_NAME"
             echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
