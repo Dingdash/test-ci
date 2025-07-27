@@ -44,11 +44,11 @@ runs:
           BRANCH_NAME="$PR_BRANCH"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git branch -D "$BRANCH_NAME" || true
+          git checkout -b "$BRANCH_NAME"
           # Commit only if there are changes
           git add . || echo "Nothing to add"
           git diff --cached --quiet || (
-            git branch -D "$BRANCH_NAME" || true
-            git checkout -b "$BRANCH_NAME"
             git commit -m "chore: release version bump"
             git push -f origin "$BRANCH_NAME"
             echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
