@@ -16,6 +16,8 @@
 - open pr ([#41](https://github.com/Dingdash/test-ci/pull/41))
 - Fix 2 ([#44](https://github.com/Dingdash/test-ci/pull/44))
 - fix cleanup ([#46](https://github.com/Dingdash/test-ci/pull/46))
+- chore: update changelog ([#45](https://github.com/Dingdash/test-ci/pull/45))
+    - Automated changelog update after merge to develop- fix ([#48](https://github.com/Dingdash/test-ci/pull/48))
 
 ## 0.0.2
 
