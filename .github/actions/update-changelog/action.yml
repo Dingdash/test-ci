@@ -31,12 +31,6 @@ runs:
       with:
         node-version: 20 
 
-    - name: Set up Git
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-      shell: bash
-
     - name: Generate changelog
       run: node cicd/release.js
       env:
@@ -47,6 +41,8 @@ runs:
     - name: Create/update branch and push
       run: |
         BRANCH_NAME="${{ inputs.pr-branch }}"
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
         git branch -D "$BRANCH_NAME" || true
         git checkout -b "$BRANCH_NAME"
         git add CHANGELOG.md
