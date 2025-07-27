@@ -23,46 +23,52 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     - name: Set up Node.js 20
       uses: actions/setup-node@v4
       with:
         node-version: 20 
-    - name: Debug env vars
-      run: |
-        echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
-        echo "GITHUB_TOKEN is ${#GITHUB_TOKEN} characters long"
-      env:
-        GITHUB_REPOSITORY: ${{ inputs.github-repository }}
-        GITHUB_TOKEN: ${{ inputs.custom-pat }}
+
+    - name: 🚀 Run release script
       shell: bash
-      
-    - name: Export env vars for changelog script
       run: |
-        echo "GITHUB_REPOSITORY=${{ inputs.github-repository }}" >> $GITHUB_ENV
-        echo "GITHUB_TOKEN=${{ inputs.custom-pat }}" >> $GITHUB_ENV
-      shell: bash
-    - name: Generate changelog
-      run: node cicd/release.js
+          node cicd/release.js
+          cat CHANGELOG.md
       env:
           GITHUB_REPOSITORY: ${{ inputs.github-repository }}
           GITHUB_TOKEN: ${{ inputs.custom-pat }}
+    - name: 📝 Commit & push changes
+      env:
+          GITHUB_REPOSITORY: ${{ inputs.github-repository }}
+          GITHUB_TOKEN: ${{ inputs.github-token }}
+          PR_BRANCH: ${{ inputs.pr-branch }}
+      run: |
+          BRANCH_NAME="$PR_BRANCH"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Commit only if there are changes
+          git add . || echo "Nothing to add"
+          git diff --cached --quiet || (
+            git branch -D "$BRANCH_NAME" || true
+            git checkout -b "$BRANCH_NAME"
+            git commit -m "chore: release version bump"
+            git push -f origin "$BRANCH_NAME"
+            echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+          )
       shell: bash
 
-    - name: Create/update branch and push
-      run: |
-        BRANCH_NAME="${{ inputs.pr-branch }}"
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git branch -D "$BRANCH_NAME" || true
-        git checkout -b "$BRANCH_NAME"
-        git add CHANGELOG.md
-        git commit -m "chore: update changelog" || echo "No changes to commit"
-        git push -f origin "$BRANCH_NAME"
-        echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
-      shell: bash
+    # - name: Create/update branch and push
+    #   run: |
+    #     BRANCH_NAME="${{ inputs.pr-branch }}"
+    #     git config user.name "github-actions[bot]"
+    #     git config user.email "github-actions[bot]@users.noreply.github.com"
+    #     git branch -D "$BRANCH_NAME" || true
+    #     git checkout -b "$BRANCH_NAME"
+    #     git add .
+    #     git commit -m "chore: update changelog" || echo "No changes to commit"
+    #     git push -f origin "$BRANCH_NAME"
+    #     echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+    #   shell: bash
 
     - name: Create or update PR
       id: cpr
