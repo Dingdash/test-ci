@@ -1,3 +1,10 @@
+## 1.1.1
+
+`2025-07-27`
+
+- updated ([#51](https://github.com/Dingdash/test-ci/pull/51))
+- updated ([#52](https://github.com/Dingdash/test-ci/pull/52))
+
 ## 1.1.0
 
 `2025-07-27`
@@ -18,6 +25,8 @@
 - fix cleanup ([#46](https://github.com/Dingdash/test-ci/pull/46))
 - chore: update changelog ([#45](https://github.com/Dingdash/test-ci/pull/45))
     - Automated changelog update after merge to develop- fix ([#48](https://github.com/Dingdash/test-ci/pull/48))
+- chore: update changelog ([#47](https://github.com/Dingdash/test-ci/pull/47))
+    - Automated changelog update after merge to develop- new workflow ([#50](https://github.com/Dingdash/test-ci/pull/50))
 
 ## 0.0.2
 
