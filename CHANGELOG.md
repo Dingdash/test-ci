@@ -1,3 +1,9 @@
+## 1.1.2
+
+`2025-07-27`
+
+- fix workflow ([#55](https://github.com/Dingdash/test-ci/pull/55))
+
 ## 1.1.1
 
 `2025-07-27`
