@@ -32,7 +32,17 @@ jobs:
             - uses: actions/checkout@v4
               with:
                 token: ${{ secrets.CUSTOM_PAT }}
+                fetch-depth: 0  
 
+            - name: Check last commit message for bump
+              run: |
+                COMMIT_MESSAGE=$(git log -1 --pretty=%B ${{ github.event.pull_request.head.sha }})
+                echo "Last PR commit message: $COMMIT_MESSAGE"
+                if echo "$COMMIT_MESSAGE" | grep -iq "bump"; then
+                echo "Commit message contains bump — exiting early."
+                exit 0
+                fi
+                echo "Commit message does not contain bump — continuing."
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
