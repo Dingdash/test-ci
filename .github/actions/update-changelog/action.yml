@@ -84,10 +84,9 @@ runs:
         pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
         merge-method: squash
 
-    - name: Set up GitHub CLI
-      uses: cli/cli-action@v1
-      with:
-        version: latest
+    - name: 📥 Install GitHub CLI
+      shell: bash
+      run: sudo apt-get install -y gh
 
     - name: Delete source branch
       shell: bash
