@@ -5,10 +5,6 @@ on:
         branches:
             - master
         types: [opened, synchronize] # trigger on opened and sync
-        paths-ignore:
-            - 'CHANGELOG.md'
-            - 'version.txt'  # or whatever file your release script updates
-            - 'VERSION'
     workflow_dispatch:
         inputs:
             dry_run:
