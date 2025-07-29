@@ -7,3 +7,4 @@ hahahah
 updated
 new
 UP
+add readme
