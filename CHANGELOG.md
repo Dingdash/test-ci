@@ -1,3 +1,11 @@
+## 1.1.3
+
+`2025-07-29`
+
+- add skipci ([#57](https://github.com/Dingdash/test-ci/pull/57))
+- update readme ([#59](https://github.com/Dingdash/test-ci/pull/59))
+- fix workflow ([#60](https://github.com/Dingdash/test-ci/pull/60))
+
 ## 1.1.2
 
 `2025-07-27`
