@@ -6,6 +6,7 @@
 - update readme ([#59](https://github.com/Dingdash/test-ci/pull/59))
 - fix workflow ([#60](https://github.com/Dingdash/test-ci/pull/60))
 - remove ([#61](https://github.com/Dingdash/test-ci/pull/61))
+- hah ([#63](https://github.com/Dingdash/test-ci/pull/63))
 
 ## 1.1.2
 
