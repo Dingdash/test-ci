@@ -1,3 +1,9 @@
+## 1.1.3
+
+`2025-07-29`
+
+- add skipci ([#57](https://github.com/Dingdash/test-ci/pull/57))
+
 ## 1.1.2
 
 `2025-07-27`
