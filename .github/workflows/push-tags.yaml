@@ -2,9 +2,10 @@ name: Push tag
 
 
 on: 
-  pull_request:
-      types: [closed]
-      branches: ["master"]
+  workflow_run:
+    workflows: ["Generate Changelog"]
+    types:
+      - completed
       
 run-name: Push Tag
 permissions:
