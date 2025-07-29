@@ -75,6 +75,6 @@ jobs:
                   # Commit only if there are changes
                   git add . || echo "Nothing to add"
                   git diff --cached --quiet || (
-                    git commit -m "chore: release version bump"
+                    git commit -m "chore: release version bump [skip ci]"
                     git push origin ${{ github.event.pull_request.head.ref }}
                   )
