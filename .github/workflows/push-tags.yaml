@@ -22,6 +22,7 @@ jobs:
         with:
           node-version: 20
       - name: Pushing Tags
+        id: push_tag
         env:
           GH_PAT: ${{ secrets.CUSTOM_PAT }}
         run: |
@@ -43,6 +44,7 @@ jobs:
           # Check if tag exists on remote
           if git ls-remote --tags origin | grep -q "refs/tags/$VERSION"; then
             echo "🔁 Tag $VERSION already exists on remote, skipping tag and release."
+            echo "created=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -51,3 +53,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "$VERSION" -m "Release $VERSION"
           git push https://x-access-token:${GH_PAT}@github.com/${GITHUB_REPOSITORY} $VERSION
+          echo "created=true" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Trigger release workflow via repository_dispatch
+        if: steps.push_tag.outputs.created == 'true'
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.CUSTOM_PAT }}
+          event-type: release-trigger
+          client-payload: '{"version":"${{ steps.push_tag.outputs.version }}"}'
