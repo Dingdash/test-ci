@@ -3,6 +3,7 @@
 `2025-07-29`
 
 - add skipci ([#57](https://github.com/Dingdash/test-ci/pull/57))
+- update readme ([#59](https://github.com/Dingdash/test-ci/pull/59))
 
 ## 1.1.2
 
