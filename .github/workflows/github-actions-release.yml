@@ -1,9 +1,10 @@
 name: Create Release
 
 on:
-  repository_dispatch:
-    types: [release-trigger]
-run-name: ${{ github.event.client_payload.version }}
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'  # Matches tags like 1.2.3
+run-name: ${{ github.ref_name }}
 permissions:
   contents: write
   packages: write
@@ -32,7 +33,6 @@ jobs:
         run: |
           VERSION="${GITHUB_REF##*/}"  # Extracts '1.2.3'
           echo "📦 Releasing tag: $VERSION"
-
           if [ -f CHANGELOG.md ]; then
             gh release create "$VERSION" \
               --repo "${{ github.repository }}" \
