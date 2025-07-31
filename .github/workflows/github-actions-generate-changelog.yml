@@ -20,25 +20,37 @@ permissions:
     contents: write
 
 jobs:
-    generate-changelogs:
+    check-latest-commit:
         if: github.event.pull_request.head.ref == 'develop'
+        runs-on: ubuntu-latest
+        outputs:
+            run_rest_jobs: ${{ steps.set_output.outputs.run_job }}
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                token: ${{ secrets.CUSTOM_PAT }}
+                fetch-depth: 0
+            - name: Check last commit message for bump
+              id: set_output
+              run: |
+                    COMMIT_MESSAGE=$(git log -1 --pretty=%B ${{ github.event.pull_request.head.sha }})
+                    echo "run_job=true" >> $GITHUB_OUTPUT
+                    if echo "$COMMIT_MESSAGE" | grep -iq "bump"; then
+                    echo "Commit message contains bump — exiting early."
+                    echo "run_job=false" >> $GITHUB_OUTPUT
+                    fi
+                    echo "Commit message does not contain bump — continuing."
+    generate-changelogs:
+        needs: [check-latest-commit]
+        if: github.event.pull_request.head.ref == 'develop' && needs.check-latest-commit.outputs.run_rest_jobs == 'true'
         runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v4
               with:
                 token: ${{ secrets.CUSTOM_PAT }}
-                fetch-depth: 0  
+                fetch-depth: 0
 
-            - name: Check last commit message for bump
-              run: |
-                COMMIT_MESSAGE=$(git log -1 --pretty=%B ${{ github.event.pull_request.head.sha }})
-                echo "Last PR commit message: $COMMIT_MESSAGE"
-                if echo "$COMMIT_MESSAGE" | grep -iq "bump"; then
-                echo "Commit message contains bump — exiting early."
-                exit 0
-                fi
-                echo "Commit message does not contain bump — continuing."
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
