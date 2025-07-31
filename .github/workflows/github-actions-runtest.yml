@@ -33,10 +33,6 @@ jobs:
                 sudo apt-get purge google-chrome-stable
                 rm -rf ~/.config/google-chrome
 
-            - name: Install Dependencies
-              run: |
-                npm install
-
             - name: Install Chrome 119
               run: |
                 wget https://mirror.kraski.tv/soft/google_chrome/linux/119.0.6045.105/google-chrome-stable_119.0.6045.105-1_amd64.deb

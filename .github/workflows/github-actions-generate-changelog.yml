@@ -24,7 +24,7 @@ jobs:
         if: github.event.pull_request.head.ref == 'develop'
         runs-on: ubuntu-latest
         outputs:
-            run_rest_jobs: ${{ steps.set_output.outputs.run_jobs }}
+            run_rest_jobs: ${{ steps.set_output.outputs.run_job }}
         steps:
             - uses: actions/checkout@v4
               with:
