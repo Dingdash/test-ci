@@ -1,17 +1,18 @@
 name: Push tag
 
+on:
+  workflow_run:
+    workflows: ["Deploy to Amazon ECS"]
+    types:
+      - completed
 
-on: 
-  pull_request:
-      types: [closed]
-      branches: ["master"]
-      
 run-name: Push Tag
 permissions:
   contents: write
 
 jobs:
   push-tag:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -22,9 +23,8 @@ jobs:
         with:
           node-version: 20
       - name: Pushing Tags
-        id: push_tag
         env:
-          GH_PAT: ${{ secrets.CUSTOM_PAT }}
+            GH_PAT: ${{ secrets.CUSTOM_PAT }}
         run: |
           # Determine version
           if [ -f package.json ]; then
@@ -35,31 +35,16 @@ jobs:
             echo "❌ No version source found!"
             exit 1
           fi
-
           echo "📦 Using version: $VERSION"
-
           # Fetch latest remote tags
           git fetch --tags
-
           # Check if tag exists on remote
           if git ls-remote --tags origin | grep -q "refs/tags/$VERSION"; then
             echo "🔁 Tag $VERSION already exists on remote, skipping tag and release."
-            echo "created=false" >> $GITHUB_OUTPUT
             exit 0
           fi
-
           # Create tag and push
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "$VERSION" -m "Release $VERSION"
           git push https://x-access-token:${GH_PAT}@github.com/${GITHUB_REPOSITORY} $VERSION
-          echo "created=true" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-      
-      - name: Trigger release workflow via repository_dispatch
-        if: steps.push_tag.outputs.created == 'true'
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.CUSTOM_PAT }}
-          event-type: release-trigger
-          client-payload: '{"version":"${{ steps.push_tag.outputs.version }}"}'
