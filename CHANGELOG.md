@@ -1,3 +1,11 @@
+## 1.2.0
+
+`2025-07-31`
+
+- fix ([#65](https://github.com/Dingdash/test-ci/pull/65))
+- fix logic ([#67](https://github.com/Dingdash/test-ci/pull/67))
+- fix workflow ([#68](https://github.com/Dingdash/test-ci/pull/68))
+
 ## 1.1.3
 
 `2025-07-29`
