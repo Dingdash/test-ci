@@ -34,10 +34,10 @@ jobs:
               id: set_output
               run: |
                     COMMIT_MESSAGE=$(git log -1 --pretty=%B ${{ github.event.pull_request.head.sha }})
-                    echo "run_job=false" >> $GITHUB_OUTPUT
+                    echo "run_job=true" >> $GITHUB_OUTPUT
                     if echo "$COMMIT_MESSAGE" | grep -iq "bump"; then
                     echo "Commit message contains bump — exiting early."
-                    echo "run_job=true" >> $GITHUB_OUTPUT
+                    echo "run_job=false" >> $GITHUB_OUTPUT
                     fi
                     echo "Commit message does not contain bump — continuing."
     generate-changelogs:
