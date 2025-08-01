@@ -1,3 +1,9 @@
+## 1.0.2
+
+`2025-08-01`
+
+- update ([#85](https://github.com/Dingdash/test-ci/pull/85))
+
 ## 1.0.1
 
 `2025-08-01`
