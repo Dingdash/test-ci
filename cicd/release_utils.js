@@ -78,9 +78,13 @@ function updateVersion(newVersion) {
         const pkgPath = path.resolve('package.json')
         if (fs.existsSync(pkgPath)) {
             const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
-            pkg.version = newVersion
-            fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
-            return
+            if (pkg.version === newVersion) {
+                console.log(`Version is already ${newVersion}, no update needed.`)
+                return
+            }
+
+            execSync(`npm version ${newVersion} --no-git-tag-version`, { stdio: 'inherit' })
+            console.log(`Updated package.json and package-lock.json to version ${newVersion}`)
         }
     } catch {
         // ignore

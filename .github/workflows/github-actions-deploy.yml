@@ -46,7 +46,7 @@ jobs:
     - name: Determine Version
       id: getversion
       run: |
-        VERSION=$(cat version.txt | tr -d '\n')
+        VERSION=$(node -p "require('./package.json').version")
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
     - name: Build and push to ECR 
