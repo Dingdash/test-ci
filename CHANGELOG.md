@@ -1,3 +1,11 @@
+## 1.3.0
+
+`2025-08-01`
+
+- test3 ([#69](https://github.com/Dingdash/test-ci/pull/69))
+- enable ([#70](https://github.com/Dingdash/test-ci/pull/70))
+- update ([#72](https://github.com/Dingdash/test-ci/pull/72))
+
 ## 1.2.0
 
 `2025-07-31`
