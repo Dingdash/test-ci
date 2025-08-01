@@ -5,6 +5,7 @@
 - trial ([#73](https://github.com/Dingdash/test-ci/pull/73))
 - update env ([#75](https://github.com/Dingdash/test-ci/pull/75))
 - fix ([#77](https://github.com/Dingdash/test-ci/pull/77))
+- add checkout ([#79](https://github.com/Dingdash/test-ci/pull/79))
 
 ## 1.3.0
 
