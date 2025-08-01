@@ -1,3 +1,9 @@
+## 1.0.1
+
+`2025-08-01`
+
+- cleanup readme ([#83](https://github.com/Dingdash/test-ci/pull/83))
+
 ## 1.0.0
 
 `2025-08-01`
