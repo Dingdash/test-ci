@@ -8,6 +8,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}        # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
 jobs:
   deploy:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'develop'
@@ -42,7 +43,7 @@ jobs:
     - name: Determine Version
       id: getversion
       run: |
-        VERSION=$(cat VERSION | tr -d '\n')
+        VERSION=$(cat version.txt | tr -d '\n')
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
     - name: Build and push to ECR 
