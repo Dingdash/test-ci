@@ -3,6 +3,7 @@
 `2025-08-01`
 
 - trial ([#73](https://github.com/Dingdash/test-ci/pull/73))
+- update env ([#75](https://github.com/Dingdash/test-ci/pull/75))
 
 ## 1.3.0
 
