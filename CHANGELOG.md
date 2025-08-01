@@ -1,3 +1,9 @@
+## 1.4.0
+
+`2025-08-01`
+
+- trial ([#73](https://github.com/Dingdash/test-ci/pull/73))
+
 ## 1.3.0
 
 `2025-08-01`
