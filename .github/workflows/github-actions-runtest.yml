@@ -21,23 +21,23 @@ jobs:
         steps:
             - name: Record Start Time
               run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
-            - name: Checkout
-              uses: actions/checkout@v4
-            - name: Setup Node
-              uses: actions/setup-node@v4
-              with:
-                node-version: 20.18.2
+            # - name: Checkout
+            #   uses: actions/checkout@v4
+            # - name: Setup Node
+            #   uses: actions/setup-node@v4
+            #   with:
+            #     node-version: 20.18.2
 
-            - name: Uninstall chrome because latest ubuntu have it.
-              run: |
-                sudo apt-get purge google-chrome-stable
-                rm -rf ~/.config/google-chrome
+            # - name: Uninstall chrome because latest ubuntu have it.
+            #   run: |
+            #     sudo apt-get purge google-chrome-stable
+            #     rm -rf ~/.config/google-chrome
 
-            - name: Install Chrome 119
-              run: |
-                wget https://mirror.kraski.tv/soft/google_chrome/linux/119.0.6045.105/google-chrome-stable_119.0.6045.105-1_amd64.deb
-                sudo dpkg -i google-chrome-stable_119.0.6045.105-1_amd64.deb || sudo apt-get -f install -y
+            # - name: Install Chrome 119
+            #   run: |
+            #     wget https://mirror.kraski.tv/soft/google_chrome/linux/119.0.6045.105/google-chrome-stable_119.0.6045.105-1_amd64.deb
+            #     sudo dpkg -i google-chrome-stable_119.0.6045.105-1_amd64.deb || sudo apt-get -f install -y
 
-            - name: Verify Chrome version
-              run: |
-               google-chrome --version
+            # - name: Verify Chrome version
+            #   run: |
+            #    google-chrome --version
