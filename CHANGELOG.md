@@ -3,6 +3,7 @@
 `2025-08-02`
 
 - Ha ([#87](https://github.com/Dingdash/test-ci/pull/87))
+- Ha ([#89](https://github.com/Dingdash/test-ci/pull/89))
 
 ## 1.0.2
 
