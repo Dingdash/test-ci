@@ -21,6 +21,10 @@ jobs:
         steps:
             - name: Record Start Time
               run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+            - name: Setup Node 
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20.18.2
             - name: Install Chrome via Puppeteer
               run: |
                 npx @puppeteer/browsers install chrome@119.0.6045.105
