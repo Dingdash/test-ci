@@ -37,9 +37,6 @@ jobs:
               run: |
                 npx @puppeteer/browsers install chrome@119.0.6045.105 -y
                 echo "$GITHUB_WORKSPACE/chrome/linux-119.0.6045.105/chrome-linux64" >> $GITHUB_PATH
-                CHROME_PATH=$(ls -d $HOME/.cache/puppeteer/chrome/linux-*/chrome-linux64)
-                echo "Chrome binary folder: $CHROME_PATH"
-                ls -l "$CHROME_PATH"
       
             - name: Check Chrome version
               run: chrome --version
