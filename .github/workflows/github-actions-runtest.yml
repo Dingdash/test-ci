@@ -27,14 +27,6 @@ jobs:
               uses: actions/setup-node@v4
               with:
                 node-version: 20.18.2
-            
-            - name: Cache Puppeteer browsers
-              uses: actions/cache@v3
-              with:
-                path: ~/.cache/puppeteer
-                key: puppeteer-browsers-${{ runner.os }}-chrome-119.0.6045.105
-                restore-keys: |
-                  puppeteer-browsers-${{ runner.os }}-chrome-
       
             - name: Install Chrome via Puppeteer
               run: |
