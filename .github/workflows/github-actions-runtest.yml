@@ -25,60 +25,12 @@ jobs:
               uses: actions/setup-node@v4
               with:
                 node-version: 20.18.2
-            name: Run Test
-
-on:
-    pull_request:
-        branches:
-        - 'master' # target branch (base)
-        types: [opened, synchronize]  # trigger on opened and sync
-
-concurrency:
-    group: test-${{ github.workflow }}
-    cancel-in-progress: true
-jobs:
-    test_e2e:
-        runs-on: ubuntu-latest
-
-        if: ${{ !contains(github.event.pull_request.labels.*.name, 'skipe2e') }}
-        timeout-minutes: 360
-        environment: develop
-        outputs:
-          duration: ${{ steps.duration.outputs.duration }}
-        steps:
-            - name: Record Start Time
-              run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
-            - name: Setup Node 
-              uses: actions/setup-node@v4
-              with:
-                node-version: 20.18.2
             - name: Install Chrome via Puppeteer
               run: |
                 npx @puppeteer/browsers install chrome@119.0.6045.105 -y
                 echo "$GITHUB_WORKSPACE/chrome/linux-119.0.6045.105/chrome-linux64" >> $GITHUB_PATH
-
             - name: Check Chrome version
               run: chrome --version
-            # - name: Checkout
-            #   uses: actions/checkout@v4
-            # - name: Setup Node
-            #   uses: actions/setup-node@v4
-            #   with:
-            #     node-version: 20.18.2
-
-            # - name: Uninstall chrome because latest ubuntu have it.
-            #   run: |
-            #     sudo apt-get purge google-chrome-stable
-            #     rm -rf ~/.config/google-chrome
-
-            # - name: Install Chrome 119
-            #   run: |
-            #     wget https://mirror.kraski.tv/soft/google_chrome/linux/119.0.6045.105/google-chrome-stable_119.0.6045.105-1_amd64.deb
-            #     sudo dpkg -i google-chrome-stable_119.0.6045.105-1_amd64.deb || sudo apt-get -f install -y
-
-            # - name: Verify Chrome version
-            #   run: |
-            #    google-chrome --version
             # - name: Checkout
             #   uses: actions/checkout@v4
             # - name: Setup Node
