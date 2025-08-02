@@ -1,6 +1,6 @@
 {
   "name": "test-ci",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "test apps",
   "main": "index.js",
   "directories": {
