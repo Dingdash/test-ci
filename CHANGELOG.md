@@ -4,6 +4,7 @@
 
 - Ha ([#87](https://github.com/Dingdash/test-ci/pull/87))
 - Ha ([#89](https://github.com/Dingdash/test-ci/pull/89))
+- try ([#90](https://github.com/Dingdash/test-ci/pull/90))
 
 ## 1.0.2
 
