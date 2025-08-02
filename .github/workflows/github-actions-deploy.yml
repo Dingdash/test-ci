@@ -19,47 +19,47 @@ jobs:
           duration: ${{ steps.duration.outputs.duration }}
 
     steps:
-    - name: Record Start Time
-      run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+    # - name: Record Start Time
+    #   run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
 
-    - name: Checkout
-      uses: actions/checkout@v4
+    # - name: Checkout
+    #   uses: actions/checkout@v4
       
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: ${{ env.AWS_REGION }}
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+    # # - name: Set up Docker Buildx
+    # #   uses: docker/setup-buildx-action@v2
       
-    - name: Login in to Amazon ECR 
-      id: login-ecr 
-      uses: aws-actions/amazon-ecr-login@v2
-      with:
-        mask-password:  "true"
-        registry-type: private
-        skip-logout: false
+    # # - name: Login in to Amazon ECR 
+    # #   id: login-ecr 
+    # #   uses: aws-actions/amazon-ecr-login@v2
+    # #   with:
+    # #     mask-password:  "true"
+    # #     registry-type: private
+    # #     skip-logout: false
         
-    - name: Determine Version
-      id: getversion
-      run: |
-        VERSION=""
-        if [ -f package.json ]; then
-        VERSION=$(node -p "require('./package.json').version")
-        fi
-        echo "📦 Using version: $VERSION"
-        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+    # # - name: Determine Version
+    # #   id: getversion
+    # #   run: |
+    # #     VERSION=""
+    # #     if [ -f package.json ]; then
+    # #     VERSION=$(node -p "require('./package.json').version")
+    # #     fi
+    # #     echo "📦 Using version: $VERSION"
+    # #     echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-    - name: Build and push to ECR 
-      id: build_image_worker
-      env: 
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-        VERSION: ${{ steps.getversion.outputs.VERSION }}
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:test_$VERSION .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:test_$VERSION
-        echo "image_worker=$ECR_REGISTRY/$ECR_REPOSITORY:test_$VERSION" >> $GITHUB_OUTPUT
+    # # - name: Build and push to ECR 
+    # #   id: build_image_worker
+    # #   env: 
+    # #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    # #     ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+    # #     VERSION: ${{ steps.getversion.outputs.VERSION }}
+    # #   run: |
+    # #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:test_$VERSION .
+    # #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:test_$VERSION
+    # #     echo "image_worker=$ECR_REGISTRY/$ECR_REPOSITORY:test_$VERSION" >> $GITHUB_OUTPUT
